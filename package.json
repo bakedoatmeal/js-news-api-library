@@ -1,0 +1,11 @@
+{
+  "name": "@bakedoatmeal/news-api-library",
+  "version": "1.0.0",
+  "description": "This news API library allows users to quickly get results from multiple different news APIs (NYT, Guardian, News API) in a standardized format.",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

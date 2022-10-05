@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>News</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <h1>News Library</h1>
+    <div class="forms">
+      <form id="form">
+        <button type="submit">Get news from news api</button>
+      </form>
+
+      <form id="form3">
+        <button type="submit">Get news from NYT</button>
+      </form>
+
+      <form id="form4">
+        <button type="submit">Get news from the Guardian</button>
+      </form>
+    </div>
+      <form id="form2">
+        <input type="text" id="search">
+        <button type="submit">Search the news api</button>
+      </form>
+      
+   
+    <div id="content"></div> 
+
+    <script type='text/javascript' src='config.js'></script>
+    <script type="module">
+      import getNews from '/api.js'
+
+      const title = document.getElementById('title');
+      const link = document.getElementById('link');
+      const desc = document.getElementById('desc');
+      const form = document.getElementById('form')
+      const content = document.getElementById('content')
+      const searchInput = document.getElementById('search')
+      const form3 = document.getElementById('form3')
+      const form4 = document.getElementById('form4')
+
+      const api_key = {
+        news: config.NEWS_API, 
+        nyt: config.NYT_API,
+        guardian: config.GUARDIAN_API
+      }
+
+      const handleData = (data) => {
+          data.forEach((value) => {
+            const article = document.createElement('div')
+            const title = document.createElement('a')
+            title.classList.add('link')
+            title.innerHTML = value.title
+            title.href = value.url
+
+            article.appendChild(title)
+
+            if (value.image_url) {
+              const image = document.createElement('img')
+              image.src = value.image_url
+              article.appendChild(image)
+            }
+
+            const desc = document.createElement('p')
+            desc.innerHTML = value.snippet
+            article.appendChild(desc)
+
+            article.classList.add('article')
+
+            content.appendChild(article)
+          })
+      }
+
+      // Define event listeners
+      form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        content.innerHTML = ''
+        getNews(api_key).then((data) => handleData(data))
+      })
+
+      form2.addEventListener('submit', (e) => {
+        e.preventDefault()
+        content.innerHTML = ''
+        const search = searchInput.value
+        getNews(api_key, 'allNews', search).then((data) => handleData(data))
+      })
+
+      form3.addEventListener('submit', (e) => {
+        e.preventDefault()
+        content.innerHTML = ''
+        getNews(api_key, 'nyt').then((data) => handleData(data))
+      })
+
+      form4.addEventListener('submit', (e) => {
+        e.preventDefault()
+        content.innerHTML = ''
+        getNews(api_key, 'guardian').then((data) => handleData(data))
+      })
+
+
+    </script>
+  </body>
+</html>
